@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.8.0;
 
-contract UserModel
+library UserStruct
 {
   struct User
   {
@@ -15,21 +15,36 @@ contract UserModel
     //upvotes: [ { type: mongoose.Schema.ObjectId, ref: 'Post' } ],
     //downvotes: [ { type: mongoose.Schema.ObjectId, ref: 'Post' } ]
   }
+}
 
-  mapping(address => User) users;
+contract UserModel
+{
+  mapping(address => UserStruct.User) users;
   uint public count = 0;
 
   function addUser(string memory name, string memory email) public
   {
     uint date_created = block.timestamp;
 
-    users[msg.sender] = User(msg.sender, name, email, false, false, false, date_created);
+    users[msg.sender] = UserStruct.User(msg.sender, name, email, false, false, false, date_created);
     count++;
   }
 
-  function removeUser() public
+  function getUser(address username) public view returns(UserStruct.User memory)
   {
-    delete users[msg.sender];
+    return users[username];
+  }
+
+  //TODO: restrict caller
+  function updateUser(UserStruct.User memory updated_user) public
+  {
+    users[updated_user.username] = updated_user;
+  }
+
+  //TODO: restrict caller
+  function removeUser(address username) public
+  {
+    delete users[username];
     count--;
   }
 

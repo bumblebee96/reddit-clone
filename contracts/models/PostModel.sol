@@ -3,9 +3,9 @@ pragma solidity 0.8.0;
 
 import "OpenZeppelin/openzeppelin-contracts@4.5.0/contracts/utils/math/Math.sol";
 
-uint constant PAGE_SIZE = 10;
+uint constant POST_PAGE_SIZE = 10;
 
-contract PostModel
+library PostStruct
 {
   struct Post
   {
@@ -19,16 +19,19 @@ contract PostModel
     //upvotedby: [ { type: mongoose.Schema.ObjectId, ref: 'User' } ],
     //downvotedby: [ { type: mongoose.Schema.ObjectId, ref: 'User' } ]
   }
+}
 
+contract PostModel
+{
   //TODO: add mapping that maps original post_id to rotated_id when a post is deleted
-  Post[] posts;
+  PostStruct.Post[] posts;
   uint public posts_index = 0;
 
   function addPost(string memory title, string memory text, string memory link) public
   {
     uint score = 0;
     uint date_created = block.timestamp;
-    Post memory element = Post(posts_index, msg.sender, title, text, link, date_created, score);
+    PostStruct.Post memory element = PostStruct.Post(posts_index, msg.sender, title, text, link, date_created, score);
 
     posts.push(element);
     posts_index++;
@@ -43,18 +46,18 @@ contract PostModel
     posts_index--;
   }
 
-  function getPost(uint id) public view returns(Post memory)
+  function getPost(uint id) public view returns(PostStruct.Post memory)
   {
     require(id < posts_index, "need valid post id");
 
     return posts[id];
   }
 
-  function getAllPosts(uint page) public view returns(Post[PAGE_SIZE] memory)
+  function getAllPosts(uint page) public view returns(PostStruct.Post[POST_PAGE_SIZE] memory)
   {
-    Post[PAGE_SIZE] memory ret_data;
-    uint starting_index = page * PAGE_SIZE;
-    uint last_index = Math.min(posts_index, starting_index + PAGE_SIZE);
+    PostStruct.Post[POST_PAGE_SIZE] memory ret_data;
+    uint starting_index = page * POST_PAGE_SIZE;
+    uint last_index = Math.min(posts_index, starting_index + POST_PAGE_SIZE);
     require(starting_index < posts_index, "need valid page number");
 
     for(uint i = starting_index; i < last_index; i++)

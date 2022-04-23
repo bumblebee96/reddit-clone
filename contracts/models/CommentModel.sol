@@ -3,9 +3,9 @@ pragma solidity 0.8.0;
 
 import "OpenZeppelin/openzeppelin-contracts@4.5.0/contracts/utils/math/Math.sol";
 
-uint constant PAGE_SIZE = 10;
+uint constant COMM_PAGE_SIZE = 10;
 
-contract CommentModel
+library CommentStruct
 {
   struct Comment
   {
@@ -18,15 +18,18 @@ contract CommentModel
     //upvotedby: [ { type: mongoose.Schema.ObjectId, ref: 'User' } ],
     //downvotedby: [ { type: mongoose.Schema.ObjectId, ref: 'User' } ]
   }
+}
 
+contract CommentModel
+{
   //post_id => comments
-  mapping(uint => Comment[]) comments;
+  mapping(uint => CommentStruct.Comment[]) comments;
 
   function addComment(uint post_id, string memory comment_body) public
   {
     uint score = 0;
     uint date_created = block.timestamp;
-    Comment memory element = Comment(post_id, comments[post_id].length, msg.sender, comment_body, date_created, score);
+    CommentStruct.Comment memory element = CommentStruct.Comment(post_id, comments[post_id].length, msg.sender, comment_body, date_created, score);
 
     comments[post_id].push(element);
   }
@@ -40,7 +43,7 @@ contract CommentModel
     comments[post_id].pop();
   }
 
-  function getComment(uint post_id, uint comment_id) public view returns(Comment memory)
+  function getComment(uint post_id, uint comment_id) public view returns(CommentStruct.Comment memory)
   {
     uint len = comments[post_id].length;
     require(comment_id < len, "need valid comment id");
@@ -48,12 +51,12 @@ contract CommentModel
     return comments[post_id][comment_id];
   }
 
-  function getAllComments(uint post_id, uint page) public view returns(Comment[PAGE_SIZE] memory)
+  function getAllComments(uint post_id, uint page) public view returns(CommentStruct.Comment[COMM_PAGE_SIZE] memory)
   {
-    Comment[PAGE_SIZE] memory ret_data;
+    CommentStruct.Comment[COMM_PAGE_SIZE] memory ret_data;
     uint comments_len = comments[post_id].length;
-    uint starting_index = page * PAGE_SIZE;
-    uint last_index = Math.min(comments_len, starting_index + PAGE_SIZE);
+    uint starting_index = page * COMM_PAGE_SIZE;
+    uint last_index = Math.min(comments_len, starting_index + COMM_PAGE_SIZE);
     require(starting_index < comments_len, "need valid page number");
 
     for(uint i = starting_index; i < last_index; i++)
@@ -62,6 +65,11 @@ contract CommentModel
     }
 
     return ret_data;
+  }
+
+  function getCommentCountByPost(uint post_id) public view returns(uint)
+  {
+    return comments[post_id].length;
   }
 
   uint256 storedData = 5;

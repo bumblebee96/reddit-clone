@@ -27,7 +27,7 @@ def test_usermodel_removeuser(accounts, user_model):
     Test if user can be removed.
     """
     user_model.addUser('enoc', 'enoc@gmail.com', {'from': accounts[0]})
-    user_model.removeUser({'from': accounts[0]})
+    user_model.removeUser(accounts[0].address, {'from': accounts[0]})
     assert user_model.count() == 0
 
 
@@ -38,7 +38,7 @@ def test_usermodel_doesuserexist(accounts, user_model):
     user_model.addUser('enoc', 'enoc@gmail.com', {'from': accounts[0]})
     assert user_model.doesUserExist(accounts[0], {'from': accounts[0]}) == True
 
-    user_model.removeUser({'from': accounts[0]})
+    user_model.removeUser(accounts[0].address, {'from': accounts[0]})
     assert user_model.doesUserExist(accounts[0], {'from': accounts[0]}) == False
 
     #set
