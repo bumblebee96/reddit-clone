@@ -11,11 +11,10 @@ contract CommentController
   uint cur_comm_page;
   uint prev_post_id;
 
-  constructor()
+  constructor(address comment_model_addr, address user_model_addr)
   {
-    //TODO: set address of post model contract in config
-    cm = CommentModel(msg.sender);
-    um = UserModel(msg.sender);
+    cm = CommentModel(comment_model_addr);
+    um = UserModel(user_model_addr);
     cur_comm_page = 0;
     prev_post_id = 0;
   }

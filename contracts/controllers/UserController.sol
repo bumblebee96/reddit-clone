@@ -14,12 +14,13 @@ contract UserController
     removeadmin
   }
 
+  PostModel pm;
   UserModel um;
 
-  constructor()
+  constructor(address post_model_addr, address user_model_addr)
   {
-    //TODO: set address of user model contract in config
-    um = UserModel(msg.sender);
+    pm = PostModel(post_model_addr);
+    um = UserModel(user_model_addr);
   }
 
   function register(string memory name, string memory email) public

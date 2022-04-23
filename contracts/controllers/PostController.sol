@@ -12,12 +12,11 @@ contract PostController
   UserModel um;
   uint cur_post_page;
 
-  constructor()
+  constructor(address comment_model_addr, address post_model_addr, address user_model_addr)
   {
-    //TODO: set address of post model contract in config
-    cm = CommentModel(msg.sender);
-    pm = PostModel(msg.sender);
-    um = UserModel(msg.sender);
+    cm = CommentModel(comment_model_addr);
+    pm = PostModel(post_model_addr);
+    um = UserModel(user_model_addr);
     cur_post_page = 0;
   }
 
