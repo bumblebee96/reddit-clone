@@ -52,24 +52,24 @@ def post_model(accounts, PostModel):
 
 
 @pytest.fixture(scope="module")
-def comment_controller(accounts, CommentController):
+def comment_controller(accounts, comment_model, user_model, CommentController):
     """
     Yield a `Contract` object for the CommentController contract.
     """
-    yield accounts[0].deploy(CommentController)
+    yield accounts[0].deploy(CommentController, comment_model, user_model)
 
 
 @pytest.fixture(scope="module")
-def post_controller(accounts, PostController):
+def post_controller(accounts, comment_model, post_model, user_model, PostController):
     """
     Yield a `Contract` object for the PostController contract.
     """
-    yield accounts[0].deploy(PostController)
+    yield accounts[0].deploy(PostController, comment_model, post_model, user_model)
 
 
 @pytest.fixture(scope="module")
-def user_controller(accounts, UserController):
+def user_controller(accounts, post_model, user_model, UserController):
     """
     Yield a `Contract` object for the UserController contract.
     """
-    yield accounts[0].deploy(UserController)
+    yield accounts[0].deploy(UserController, post_model, user_model)

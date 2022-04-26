@@ -31,7 +31,7 @@ contract PostModel
   {
     uint score = 0;
     uint date_created = block.timestamp;
-    PostStruct.Post memory element = PostStruct.Post(posts_index, msg.sender, title, text, link, date_created, score);
+    PostStruct.Post memory element = PostStruct.Post(posts_index, tx.origin, title, text, link, date_created, score);
 
     posts.push(element);
     posts_index++;

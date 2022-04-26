@@ -44,6 +44,9 @@ contract CommentController
 
   function submitComment(uint post_id, string memory text) public
   {
+    bool user_already_exists = um.doesUserExist(msg.sender);
+    require(user_already_exists, "There is no user with that username");
+
     cm.addComment(post_id, text);
   }
 

@@ -29,7 +29,7 @@ contract CommentModel
   {
     uint score = 0;
     uint date_created = block.timestamp;
-    CommentStruct.Comment memory element = CommentStruct.Comment(post_id, comments[post_id].length, msg.sender, comment_body, date_created, score);
+    CommentStruct.Comment memory element = CommentStruct.Comment(post_id, comments[post_id].length, tx.origin, comment_body, date_created, score);
 
     comments[post_id].push(element);
   }

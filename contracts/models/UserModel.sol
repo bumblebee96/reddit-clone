@@ -26,7 +26,7 @@ contract UserModel
   {
     uint date_created = block.timestamp;
 
-    users[msg.sender] = UserStruct.User(msg.sender, name, email, false, false, false, date_created);
+    users[tx.origin] = UserStruct.User(tx.origin, name, email, false, false, false, date_created);
     count++;
   }
 

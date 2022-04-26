@@ -26,7 +26,7 @@ contract PostController
     require(user_already_exists, "There is no user with that username");
 
     UserStruct.User memory user = um.getUser(msg.sender);
-    return user.banned;
+    return !user.banned;
   }
 
   function getNextPosts() public returns(PostStruct.Post[POST_PAGE_SIZE] memory)
@@ -48,6 +48,9 @@ contract PostController
 
   function submitNewPost(string memory title, string memory text, string memory link) public
   {
+    bool user_already_exists = um.doesUserExist(msg.sender);
+    require(user_already_exists, "There is no user with that username");
+
     pm.addPost(title, text, link);
   }
 

@@ -26,7 +26,7 @@ contract UserController
   function register(string memory name, string memory email) public
   {
     bool user_already_exists = um.doesUserExist(msg.sender);
-    require(!user_already_exists, "The username is already taken");
+    require(user_already_exists == false, "The username is already taken");
 
     um.addUser(name, email);
   }
@@ -34,7 +34,7 @@ contract UserController
   function login() public view returns(UserStruct.User memory)
   {
     bool user_already_exists = um.doesUserExist(msg.sender);
-    require(user_already_exists, "There is no user with that username");
+    require(user_already_exists == true, "There is no user with that username");
 
     return um.getUser(msg.sender);
   }
