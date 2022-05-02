@@ -1,54 +1,28 @@
-# Brownie React Mix
+# Reddit Clone
 
-This mix comes with everything you need to start using [React](https://reactjs.org/) with a Brownie project.
+Reddit MVC clone
 
 ## Installation
-
-1. [Install Brownie](https://eth-brownie.readthedocs.io/en/stable/install.html), if you haven't already. You must be using version `1.9.0` or newer.
-
-2. Download the mix.
-
+1. Create virtual env.
     ```bash
-    brownie bake react-mix
+    python3 -m venv venv
     ```
 
-3. Install the React client dependencies.
+2. Activate virtual env.
+    ```bash
+    source venv/bin/activate
+    ```
 
+3. Install required pip packages.
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. Install required npm packages.
     ```bash
     cd ./client
-    yarn install
+    npm install
     ```
-    or 
-
-    ```bash
-    cd ./client
-    npm install 
-    ```
-
-4. If you want to be able to deploy to testnets, do the following.
-
-    Set your WEB3_INFURA_PROJECT_ID, and PRIVATE_KEY environment variables.
-
-    You can get a WEB3_INFURA_PROJECT_ID by getting a free trial of Infura. At the moment, it does need to be infura with brownie. If you get lost, follow the instructions at https://ethereumico.io/knowledge-base/infura-api-key-guide/. You can find your PRIVATE_KEY from your ethereum wallet like metamask.
-
-    You'll also need testnet ETH. You can get ETH into your wallet by using the faucet for the appropriate
-    testnet. For Kovan, a faucet is available at https://linkfaucet.protofire.io/kovan.
-
-    You can add your environment variables to a .env file. You can use the .env_example in this repo 
-    as a template, just fill in the values and rename it to '.env'. 
-
-    Here is what your .env should look like:
-
-    ```bash
-    export WEB3_INFURA_PROJECT_ID=<PROJECT_ID>
-    export PRIVATE_KEY=<PRIVATE_KEY>
-    ```
-   
-5. Create brownie account(s) following instructions here:
-       https://eth-brownie.readthedocs.io/en/stable/account-management.html
-
-6. Import the brownie account to MetaMask using their private key(s)
-
 
 
 ## Usage
@@ -57,71 +31,81 @@ This mix comes with everything you need to start using [React](https://reactjs.o
 
     ```bash
     $ brownie console
-    Brownie v1.9.0 - Python development framework for Ethereum
+    Brownie v1.18.1 - Python development framework for Ethereum
 
-    ReactMixProject is the active project.
-    Launching 'ganache-cli'...
+    DredditProject is the active project.
+    Launching 'ganache-cli --chain.vmErrorsOnRPCResponse true --server.port 8545 --miner.blockGasLimit 12000000 --wallet.totalAccounts 10 --hardfork istanbul --wallet.mnemonic brownie'...
     Brownie environment is ready.
     ```
 
-    Alternatively, to run on Kovan, set the network flag to kovan
-
-    ```bash
-    $ brownie console --network kovan
-    Brownie v1.14.6 - Python development framework for Ethereum
-
-    ReactMixProject is the active project.
-    Brownie environment is ready.
-    ```
-
-2. Run the [deployment script](scripts/deploy.py) to deploy the project's smart contracts.
+2. Run the [deployment script](scripts/deploy_controllers.py) to deploy the project's smart contracts.
 
     ```python
-    >>> run("deploy")
-    Running 'scripts.deploy.main'...
-    Transaction sent: 0xd1000d04fe99a07db864bcd1095ddf5cb279b43be8e159f94dbff9d4e4809c70
-    Gas price: 0.0 gwei   Gas limit: 6721975
-    SolidityStorage.constructor confirmed - Block: 1   Gas used: 110641 (1.65%)
-    SolidityStorage deployed at: 0xF104A50668c3b1026E8f9B0d9D404faF8E42e642
+    >>> run("deploy_controllers")
 
-    Transaction sent: 0xee112392522ed24ac6ab8cc8ba09bfe51c5d699d9d1b39294ba87e5d2a56212c
-    Gas price: 0.0 gwei   Gas limit: 6721975
-    VyperStorage.constructor confirmed - Block: 2   Gas used: 134750 (2.00%)
-    VyperStorage deployed at: 0xB8485421abC325D172652123dBd71D58b8117070
+    Running 'scripts/deploy_controllers.py::main'...
+    Transaction sent: 0x70e557ef7885860dc3ee3b4e6f14622e4c6fe1dbe2cbeedffb849171c8a204b2
+      Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 0
+      CommentModel.constructor confirmed   Block: 1   Gas used: 744383 (6.20%)
+      CommentModel deployed at: 0x3194cBDC3dbcd3E11a07892e7bA5c3394048Cc87
+
+    Transaction sent: 0x3ba8f4b90e1658cb3e93fc3780935a5407f6729fa961c0a00fb738b4080c38e9
+      Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 1
+      PostModel.constructor confirmed   Block: 2   Gas used: 927789 (7.73%)
+      PostModel deployed at: 0x602C71e4DAC47a042Ee7f46E0aee17F94A3bA0B6
+
+    Transaction sent: 0x5d6679a75c34befe4625cd53c84ac9160e9abc9454c5c8511b1cedadae3a1099
+      Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 2
+      UserModel.constructor confirmed   Block: 3   Gas used: 648868 (5.41%)
+      UserModel deployed at: 0xE7eD6747FaC5360f88a2EFC03E00d25789F69291
+
+    Models Deployed!
+    Transaction sent: 0x3a991cfb1a1b87a7ff2095fdf9d12ebc775f08a632ab0d23b6de34beb17efb6c
+      Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 3
+      CommentController.constructor confirmed   Block: 4   Gas used: 822718 (6.86%)
+      CommentController deployed at: 0x6951b5Bd815043E3F842c1b026b0Fa888Cc2DD85
+
+    Transaction sent: 0xb729de725122cc046f36663c9a77de0885dec58128d961ca715b2b8b068bb7f5
+      Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 4
+      PostController.constructor confirmed   Block: 5   Gas used: 1140029 (9.50%)
+      PostController deployed at: 0xe0aA552A10d7EC8760Fc6c246D391E698a82dDf9
+
+    Transaction sent: 0xb3957329177692986593b9334406a509e98c6f29d8d7660ea7588c11da220fb8
+      Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 5
+      UserController.constructor confirmed   Block: 6   Gas used: 815862 (6.80%)
+      UserController deployed at: 0x6b4BDe1086912A6Cb24ce3dB43b3466e6c72AFd3
+
+    Controllers Deployed!
     ```
 
 3. While Brownie is still running, start the React app in a different terminal.
 
     The first time this app is used, the node modules have to be installed in /src.
-    To do this, navigate to ./client/src and run
+    To do this, navigate to ./client and run
 
     ```bash
     # make sure to use a different terminal, not the brownie console
     npm install
     npm audit fix
+    npm start
     ```
 
-4. Connect Metamask to the local Ganache network. In the upper right corner, click the network dropdown menu. Select `Localhost 8545`, or `Kovan test network`:
+4. Connect Metamask to the local Ganache network. In the upper right corner, click the network dropdown menu. Select `Localhost 8545`:
 
 
 
 5. Interact with the smart contracts using the web interface or via the Brownie console.
 
     ```python
-    # get the newest vyper storage contract
-    >>> vyper_storage = VyperStorage[-1]
+    # get the newest user controller contract
+    >>> uc = UserController[-1]
 
-    # the default sender of the transaction is the contract creator
-    >>> vyper_storage.set(1337)
+    # register a new user
+    >>> alice = get_account(0)
+    >>> uc.register("alice", "alice@utexas.edu", {"from": alice})
     ```
 
     Any changes to the contracts from the console should show on the website after a refresh, and vice versa.
-
-## Ending a Session
-
-When you close the Brownie console, the Ganache instance also terminates and the deployment artifacts are deleted.
-
-To retain your deployment artifacts (and their functionality) you can launch Ganache yourself prior to launching Brownie. Brownie automatically attaches to the ganache instance where you can deploy the contracts. After closing Brownie, the chain and deployment artifacts will persist.
 
 ## Further Possibilities
 
@@ -133,39 +117,3 @@ To run the test suite:
 brownie test
 ```
 
-### Deploying to a Live Network
-
-To deploy your contracts to the mainnet or one of the test nets, first modify [`scripts/deploy.py`](`scripts/deploy.py`) to [use a funded account](https://eth-brownie.readthedocs.io/en/stable/account-management.html).
-
-Then:
-
-```bash
-brownie run deploy --network kovan
-```
-
-Replace `kovan` with the name of the network you wish you use. You may also wish to adjust Brownie's [network settings](https://eth-brownie.readthedocs.io/en/stable/network-management.html).
-
-For contracts deployed on a live network, the deployment information is stored permanently unless you:
-
-* Delete or rename the contract file or
-* Manually remove the `client/src/artifacts/` directory
-
-
-## Resources
-
-This mix provides a bare-bones implementation of [Create React App](https://create-react-app.dev/), configured to work with Brownie.
-
-To get started with React and building a front-end for your dApps:
-
-* [Rimble](https://github.com/consensysmesh/rimble-ui#readme) is an open-source library of React components and guides to help you make dApps. Along with components they provide guides and tutorials to help you get started.
-* For more in-depth information, read the [Create React App documentation](https://create-react-app.dev/docs/getting-started)
-
-
-To get started with Brownie:
-
-* Check out the other [Brownie mixes](https://github.com/brownie-mix/) that can be used as a starting point for your own contracts. They also provide example code to help you get started.
-* ["Getting Started with Brownie"](https://medium.com/@iamdefinitelyahuman/getting-started-with-brownie-part-1-9b2181f4cb99) is a good tutorial to help you familiarize yourself with Brownie
-* For more in-depth information, read the [Brownie documentation](https://eth-brownie.readthedocs.io/en/stable/)
-
-
-Any questions? Join our [Gitter](https://gitter.im/eth-brownie/community) channel to chat and share with others in the community.
